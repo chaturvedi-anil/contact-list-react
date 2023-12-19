@@ -6,7 +6,7 @@ export const ContactProvider = ({children})=>{
     const [contacts, setContacts] = useState([]);
 
     const getContactList = () => {
-        let response = axios.get("https://jsonplaceholder.typicode.com/users")
+        const getResponse = axios.get("https://jsonplaceholder.typicode.com/users")
             .then((res)=>{
                 return res.data;
             })
@@ -14,23 +14,29 @@ export const ContactProvider = ({children})=>{
                 return error.message;
             });
 
-        setContacts(contacts);
-        return response;
+        return getResponse;
     }
 
-    const newContact = (body)=> { 
-        
+    const addNewContact = (body)=> { 
+        console.log('body : ', body);
     }
     const updateContact = (id) => {
 
     }
 
     const deleteContact = (id) => {
-
+        let deleteResponse = axios.delete(`https://jsonplaceholder.typicode.com/users/:${id}`)
+            .then((res)=>{
+                return res;
+            })
+            .catch((error)=>{
+                return error.message;
+            });
+        return deleteResponse;
     }
 
     return(
-        <ContactContext.Provider value={{contacts, setContacts, getContactList, newContact, updateContact , deleteContact}}>
+        <ContactContext.Provider value={{contacts, setContacts, getContactList, addNewContact, updateContact , deleteContact}}>
             {children}
         </ContactContext.Provider>
     )
