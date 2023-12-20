@@ -1,13 +1,18 @@
 import React, {useState} from 'react';
-import {useContact} from '../../context';
+import {useNavigate} from 'react-router-dom';
 import './NewContact.scss';
 
-const NewContact = () => {
+import { useContact } from '../../context';
+
+const NewContact = ({stateVal}) => {
+  const {isNewContactActive, setNewContactActive} = stateVal;
   const {addNewContact} = useContact();
+  let {setContacts} = useContact();
+  const navigate = useNavigate();
 
   const [formData, setFormData]=useState({
     name:"",
-    phoneNumber:"",
+    phone:"",
     email:"",
     username:"",
     website:"",
@@ -25,8 +30,13 @@ const NewContact = () => {
 
   const handleSubmit= async (e)=>{
     e.preventDefault();
-    let addResponse= await addNewContact(formData);
-    console.log("addResponnse : ", addNewContact);
+    let addResponse = await addNewContact(formData);
+    if(addResponse.status === 201){
+      setContacts((prev)=> [formData, ...prev]);
+    }
+
+    setNewContactActive((prev)=> !prev);
+    navigate('/');
   }
   return (
     <div className='new-contact-form-wrapper'>
@@ -40,13 +50,15 @@ const NewContact = () => {
           name="name"
           value={formData.name}
           onChange={handleChange}
+          required
         />
         <input 
           type="number" 
           placeholder="Enter Phone Number"
-          name="phoneNumber"
-          value={formData.phoneNumber}
+          name="phone"
+          value={formData.phone}
           onChange={handleChange}
+          required
         />
         <input 
           type="email" 
@@ -54,6 +66,7 @@ const NewContact = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
+          required
         />
         <input 
           type="text" 
@@ -61,6 +74,7 @@ const NewContact = () => {
           name="username"
           value={formData.username}
           onChange={handleChange}
+          required
         />
         <input 
           type="text" 

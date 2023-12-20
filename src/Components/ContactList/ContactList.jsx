@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from 'react';
 import './ContactList.scss';
 import userIcon from '../../assets/logos/usersIcon.png';
 import deleteLogo from '../../assets/logos/deleteLogo.svg';
 import editLogo from '../../assets/logos/editLogo.svg';
-import { useContact } from '../../context.jsx';
 
-const ContactList = () => {
-    const {getContactList, deleteContact ,contacts, setContacts} = useContact();
-    const [showContactDetails, setShowContactDetails] = useState(false);
-    let showContact=[];
+import { useContact } from '../../context';
+
+const ContactList = (props) => {
+    
+    const {deleteContact, updateContact} = useContact();
+    let {contacts, setContacts} = useContact();
+
 
     const handleContactDetails=(contactId)=>{
-        setShowContactDetails(true);
-        showContact=contacts.filter((contact)=> contactId===contact.id);
+        
         console.log("showContact : ", showContact);
     }   
 
@@ -20,19 +20,15 @@ const ContactList = () => {
         console.log("update id : ", contactId);
     }
 
-    const handleDeleteContact= async(contactId)=>{
-        let res= await deleteContact(contactId);
-        console.log('delete response : ', res);
-        if(res.status === 200){
-            let newContacts= contacts.filter((contact) => contact.id !== contactId);
-            setContacts(newContacts);
+    const handleDeleteContact = async(contactId)=>{
+        let deleteResponse = await deleteContact(contactId);
+        if(deleteResponse.status === 200)
+        {
+            const newContact= contacts.filter((contact)=> contact.id !== contactId);
+            setContacts(newContact);
         }
     }
 
-    useEffect(async()=>{
-        const res= await getContactList();
-        setContacts(res);
-    },[setContacts]);
     return (
         <div className='contactList-container'>
             {console.log("contact List : ", contacts)}

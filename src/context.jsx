@@ -1,9 +1,13 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
+
+// creating context
 const ContactContext=createContext();
 
+
+// context provider
 export const ContactProvider = ({children})=>{
-    const [contacts, setContacts] = useState([]);
+    let [contacts, setContacts] = useState([]);
 
     const getContactList = () => {
         const getResponse = axios.get("https://jsonplaceholder.typicode.com/users")
@@ -18,10 +22,17 @@ export const ContactProvider = ({children})=>{
     }
 
     const addNewContact = (body)=> { 
-        console.log('body : ', body);
+        let addResponse=axios.post('https://jsonplaceholder.typicode.com/users', body)
+            .then((res)=>{
+                return res;
+            })
+            .catch((error)=>{
+                return error.message;
+            })
+        return addResponse;
     }
     const updateContact = (id) => {
-
+        
     }
 
     const deleteContact = (id) => {
@@ -42,6 +53,7 @@ export const ContactProvider = ({children})=>{
     )
 }
 
+// customhook 
 export const useContact=()=>{
     return useContext(ContactContext);
 }
