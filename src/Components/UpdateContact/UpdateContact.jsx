@@ -1,6 +1,5 @@
 import React ,{useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import '../NewContact/NewContact.scss';
 import { useContact } from '../../context';

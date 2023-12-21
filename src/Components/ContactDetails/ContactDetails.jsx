@@ -7,6 +7,8 @@ import './ContactDetails.scss';
 const ContactDetails = () => {
     const {id} = useParams();
     const {contacts} = useContact();
+
+    // getting single contact 
     const detailsContact = contacts.filter((contact)=>contact.id == id);
 
     return (

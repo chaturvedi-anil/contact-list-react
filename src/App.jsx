@@ -2,18 +2,18 @@ import {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.scss';
 
-import Navbar from './Components/Navbar/Navbar';
-import ContactList from './Components/ContactList/ContactList';
-import NewContact from './Components/NewContact/NewContact';
-import UpdateContact from './Components/UpdateContact/UpdateContact';
+import {Navbar, NewContact, ContactList, ContactDetails, UpdateContact} from './Components/index';
 
 import { useContact } from './context';
-import ContactDetails from './Components/ContactDetails/ContactDetails';
+
 
 function App() {
   const {getContactList,isHomeActive, setContacts} = useContact();
+
+  // managing state for loading state 
   const [loading, setLoading] = useState(true);
 
+  // getting contact list
   useEffect(async()=>{
       const res= await getContactList();
       setContacts(res);

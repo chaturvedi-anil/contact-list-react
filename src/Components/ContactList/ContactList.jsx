@@ -2,6 +2,8 @@ import {useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
 
 import './ContactList.scss';
+
+// importing all the logo used in app
 import userIcon from '../../assets/logos/usersIcon.png';
 import deleteLogo from '../../assets/logos/deleteLogo.svg';
 import editLogo from '../../assets/logos/editLogo.svg';
