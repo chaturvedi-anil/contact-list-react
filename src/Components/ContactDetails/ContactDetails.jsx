@@ -8,7 +8,7 @@ const ContactDetails = () => {
     const {id} = useParams();
     const {contacts} = useContact();
     const detailsContact = contacts.filter((contact)=>contact.id == id);
-    console.log("details : ", detailsContact);
+
     return (
         <div className="contact-deatils-container">
             <div className="details">

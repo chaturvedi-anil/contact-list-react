@@ -1,13 +1,13 @@
 import React ,{useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
+import {toast} from 'react-toastify';
 import '../NewContact/NewContact.scss';
 import { useContact } from '../../context';
 
 const UpdateContact = () => {
   const {id} = useParams();
-  const {updateContact , isHomeActive, setHomeActive} = useContact();
-  let {setContacts, contacts} = useContact();
+  const {setHomeActive, setContacts, contacts} = useContact();
   const navigate = useNavigate();
 
   const [formData, setFormData]=useState({
@@ -30,39 +30,35 @@ const UpdateContact = () => {
 
   const handleSubmit= async (e)=>{
     e.preventDefault();
-    let updateResponse = await updateContact(id,formData);
-    if(updateResponse.status === 200)
-    {
-      let updateCont = contacts.map((contact)=>{
-        if(contact.id == id){
-          return {
-            id: id,
-            name: formData.name,
-            phone: formData.phone,
-            email:  formData.email,
-            username: formData.username,
-            website:  formData.website,
-            company: formData.company,
-            city: formData.city,
-            zipcode: formData.zipcode
-          }
-        } else {
-          return contact;
+    let updateCont = contacts.map((contact)=>{
+      if(contact.id == id){
+        return {
+          id: id,
+          name: formData.name,
+          phone: formData.phone,
+          email:  formData.email,
+          username: formData.username,
+          website:  formData.website,
+          company: formData.company,
+          city: formData.city,
+          zipcode: formData.zipcode
         }
+      } else {
+        return contact;
+      }
 
-      });
+    });
 
-      setContacts(updateCont);
-    } else {
-      
-    }
-    setHomeActive((prev)=> !prev);
+    setContacts(updateCont);
     navigate('/');
+    toast.success("Contact Updated Successfully!", 5000);
+    setHomeActive((prev)=> !prev);
   }
 
   const handleCancel =()=>{
     setHomeActive((prev)=> !prev);
     navigate('/');
+    toast.success("Back To home Page", 5000);
   }
   return (
     <div className='new-contact-form-wrapper'>

@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {toast} from 'react-toastify';
 import './NewContact.scss';
 
 import { useContact } from '../../context';
 
 const NewContact = () => {
-  const {addNewContact, setHomeActive} = useContact();
-  let {setContacts} = useContact();
+  const {addNewContact, setHomeActive, setContacts, contacts} = useContact();
   const navigate = useNavigate();
 
-  console.log("newContact");
-
   const [formData, setFormData]=useState({
+    id:contacts.length+1,
     name:"",
     phone:"",
     email:"",
@@ -33,7 +32,11 @@ const NewContact = () => {
     e.preventDefault();
     let addResponse = await addNewContact(formData);
     if(addResponse.status === 201){
+      
       setContacts((prev)=> [formData, ...prev]);
+      toast.success("New Contact Added Successfully!", 5000);
+    } else {
+      toast.error(addResponse, 5000);
     }
 
     setHomeActive((prev)=> !prev);
@@ -43,6 +46,7 @@ const NewContact = () => {
   const handleCancel =()=>{
     setHomeActive((prev)=> !prev);
     navigate('/');
+    toast.success("Back To home Page", 5000);
   }
   return (
     <div className='new-contact-form-wrapper'>

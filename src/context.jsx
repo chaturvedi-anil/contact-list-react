@@ -1,68 +1,65 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 
-// creating context
-const ContactContext=createContext();
+// Creating context for managing contacts
+const ContactContext = createContext();
 
-
-// context provider
-export const ContactProvider = ({children})=>{
-    let [contacts, setContacts] = useState([]);
+// Context provider component
+export const ContactProvider = ({ children }) => {
+    // State variables for contacts and home activity
+    const [contacts, setContacts] = useState([]);
     const [isHomeActive, setHomeActive] = useState(true);
 
-    const getContactList = () => {
-        const getResponse = axios.get("https://jsonplaceholder.typicode.com/users")
-            .then((res)=>{
-                return res.data;
-            })
-            .catch((error)=>{
-                return error.message;
-            });
+    // Function to retrieve the contact list from an API
+    const getContactList = async () => {
+        try {
+            const response = await axios.get("https://jsonplaceholder.typicode.com/users");
+            return response.data;
+        } catch (error) {
+            return error.message;
+        }
+    };
 
-        return getResponse;
-    }
+    // Function to add a new contact
+    const addNewContact = async (body) => {
+        try {
+            const response = await axios.post('https://jsonplaceholder.typicode.com/users', body);
+            return response;
+        } catch (error) {
+            return error.message;
+        }
+    };
 
-    const addNewContact = (body)=> { 
-        let addResponse=axios.post('https://jsonplaceholder.typicode.com/users', body)
-            .then((res)=>{
-                return res;
-            })
-            .catch((error)=>{
-                return error.message;
-            })
-        return addResponse;
-    }
-    const updateContact = (id, body) => {
-        let updateResponse=axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, body)
-            .then((res)=>{
-                return res;
-            })
-            .catch((error)=>{
-                return error.message;
-            })
-        return updateResponse;
-    }
+    // Function to delete a contact
+    const deleteContact = async (id) => {
+        try {
+            const response = await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+            return response;
+        } catch (error) {
+            return error.message;
+        }
+    };
 
-    const deleteContact = (id) => {
-        let deleteResponse = axios.delete(`https://jsonplaceholder.typicode.com/users/:${id}`)
-            .then((res)=>{
-                return res;
-            })
-            .catch((error)=>{
-                return error.message;
-            });
-        return deleteResponse;
-    }
-
-    return(
-        <ContactContext.Provider value={{isHomeActive, setHomeActive,contacts, setContacts, getContactList, addNewContact, updateContact , deleteContact}}>
+    // Providing the context values to the children components
+    return (
+        <ContactContext.Provider
+            value={{
+                isHomeActive,
+                setHomeActive,
+                contacts,
+                setContacts,
+                getContactList,
+                addNewContact,
+                // updateContact,
+                deleteContact,
+            }}
+        >
             {children}
         </ContactContext.Provider>
-    )
-}
+    );
+};
 
-// customhook 
-export const useContact=()=>{
+// Custom hook to access the contact context
+export const useContact = () => {
     return useContext(ContactContext);
-}
-
+};

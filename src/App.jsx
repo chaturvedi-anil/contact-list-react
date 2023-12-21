@@ -11,8 +11,7 @@ import { useContact } from './context';
 import ContactDetails from './Components/ContactDetails/ContactDetails';
 
 function App() {
-  const {getContactList,isHomeActive} = useContact();
-  let {setContacts} = useContact();
+  const {getContactList,isHomeActive, setContacts} = useContact();
   const [loading, setLoading] = useState(true);
 
   useEffect(async()=>{

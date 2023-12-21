@@ -1,4 +1,5 @@
 import {useNavigate} from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 import './ContactList.scss';
 import userIcon from '../../assets/logos/usersIcon.png';
@@ -29,6 +30,9 @@ const ContactList = () => {
         {
             const newContact= contacts.filter((contact)=> contact.id !== contactId);
             setContacts(newContact);
+            toast.success("Contact Deleted Successfully", {autoClose:5000});
+        } else {
+            toast.error(deleteResponse, {autoClose:5000});
         }
     }
     return (
