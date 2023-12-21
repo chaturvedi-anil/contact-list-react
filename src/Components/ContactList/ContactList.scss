@@ -8,13 +8,20 @@
     font-weight: bold;
     cursor: pointer;
 }
+.loadingText{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: royalblue;
+}
 .contacts-wrapper{
     width: 100%;
     margin-top: 5px;
     min-height: 85.5vh;
     
     .contacts{
-        box-shadow: 0px 0px 10px 5px white;
+        box-shadow: 0px 0px 10px 5px grey;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
@@ -23,8 +30,9 @@
         width: 25rem;
         margin: 2rem 2rem;
         box-sizing: border-box;
+        color: black;
         .contact-image{
-            border-bottom: 3px solid white;
+            border-bottom: 3px solid grey;
             /* margin: 15px; */
             padding: 2rem 2.5rem;
             width: 100%;

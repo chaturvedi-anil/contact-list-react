@@ -4,11 +4,12 @@ import './NewContact.scss';
 
 import { useContact } from '../../context';
 
-const NewContact = ({stateVal}) => {
-  const {isNewContactActive, setNewContactActive} = stateVal;
-  const {addNewContact} = useContact();
+const NewContact = () => {
+  const {addNewContact, setHomeActive} = useContact();
   let {setContacts} = useContact();
   const navigate = useNavigate();
+
+  console.log("newContact");
 
   const [formData, setFormData]=useState({
     name:"",
@@ -35,7 +36,12 @@ const NewContact = ({stateVal}) => {
       setContacts((prev)=> [formData, ...prev]);
     }
 
-    setNewContactActive((prev)=> !prev);
+    setHomeActive((prev)=> !prev);
+    navigate('/');
+  }
+
+  const handleCancel =()=>{
+    setHomeActive((prev)=> !prev);
     navigate('/');
   }
   return (
@@ -45,6 +51,7 @@ const NewContact = ({stateVal}) => {
       </h1>
       <form onSubmit={handleSubmit} className="">
         <input 
+          id="name"
           type="text" 
           placeholder="Enter Name"
           name="name"
@@ -82,6 +89,7 @@ const NewContact = ({stateVal}) => {
           name="website"
           value={formData.website}
           onChange={handleChange}
+          required
         />
         <input 
           type="text" 
@@ -109,7 +117,7 @@ const NewContact = ({stateVal}) => {
           <button type='submit' className="submit">
             Add Contact
           </button>
-          <button type='reset' className="reset">
+          <button type='reset' className="reset" onClick={handleCancel}>
             Cancel
           </button>
         </div>

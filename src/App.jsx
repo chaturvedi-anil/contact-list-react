@@ -8,31 +8,38 @@ import NewContact from './Components/NewContact/NewContact';
 import UpdateContact from './Components/UpdateContact/UpdateContact';
 
 import { useContact } from './context';
+import ContactDetails from './Components/ContactDetails/ContactDetails';
 
 function App() {
-  const {getContactList} = useContact();
-  const [isNewContactActive, setNewContactActive] = useState(false);
+  const {getContactList,isHomeActive} = useContact();
   let {setContacts} = useContact();
+  const [loading, setLoading] = useState(true);
 
   useEffect(async()=>{
       const res= await getContactList();
       setContacts(res);
+      setLoading(false);
   },[]);
 
   return(
     <Router>
-      <Navbar stateVal={{isNewContactActive, setNewContactActive}} />
-      <div className='contacts-wrapper'>
+      <Navbar />
+      {loading ? 
+        <h1 className='loadingText'>Fetching Contact List...</h1> 
+        :
+        <div className='contacts-wrapper'>
           <Routes>
             {
-              isNewContactActive ?  
-              <Route path='/new-contact' element={<NewContact stateVal={{isNewContactActive, setNewContactActive}}/>} />
-              : 
-              <Route path='/' element={<ContactList />}/>
+              isHomeActive ? 
+              <Route path='/' element={<ContactList />}/> 
+              :
+              <Route path='/new-contact' element={<NewContact />} />
             }
-            <Route path='/update-contact' element={<UpdateContact />}/>
+            <Route path='/update-contact/:id' element={<UpdateContact />}/>
+            <Route path='/contact-details/:id' element={<ContactDetails />} />
           </Routes>
-      </div>
+        </div>
+      }
     </Router>
   )
 }

@@ -1,14 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import addContact from '../../assets/logos/addContactLogo.svg';  
 import homeLogo from '../../assets/logos/homeLogo.svg';
 import './Navbar.scss';
+import { useContact } from '../../context';
 
-const Navbar = ({ stateVal }) => {
-  const { isNewContactActive, setNewContactActive } = stateVal;
+const Navbar = () => {
+  const navigate=useNavigate();
+  const {isHomeActive, setHomeActive} = useContact();
 
   const handleAddNewContact = () => {
-    setNewContactActive((prev) => !prev);
+    if(isHomeActive){
+      navigate('/new-contact');
+    } else {
+      navigate('/');
+    }
+    setHomeActive((prev)=>!prev);
   };
 
   return (
@@ -18,16 +25,16 @@ const Navbar = ({ stateVal }) => {
       </div>
       <div className="button-container">
         <button onClick={handleAddNewContact}> 
-          {isNewContactActive ? (
-            <Link to="/">
-              <img src={homeLogo} alt="Home" />
-              <span>Home</span>
-            </Link>
-          ) : (
-            <Link to="/new-contact">
+          {isHomeActive ? (
+            <>
               <img src={addContact} alt="Add Contact" />
               <span>Add Contact</span>
-            </Link>
+            </>
+          ) : (
+            <>
+              <img src={homeLogo} alt="Home" />
+              <span>Home</span>
+            </>
           )}
         </button>
       </div>

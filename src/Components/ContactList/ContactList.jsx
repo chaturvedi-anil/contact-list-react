@@ -1,3 +1,5 @@
+import {useNavigate} from 'react-router-dom';
+
 import './ContactList.scss';
 import userIcon from '../../assets/logos/usersIcon.png';
 import deleteLogo from '../../assets/logos/deleteLogo.svg';
@@ -5,19 +7,20 @@ import editLogo from '../../assets/logos/editLogo.svg';
 
 import { useContact } from '../../context';
 
-const ContactList = (props) => {
-    
-    const {deleteContact, updateContact} = useContact();
-    let {contacts, setContacts} = useContact();
+const ContactList = () => {
 
+    const navigate=useNavigate();
+    const {deleteContact} = useContact();
+    let {contacts, setContacts, setHomeActive} = useContact();
 
-    const handleContactDetails=(contactId)=>{
-        
-        console.log("showContact : ", showContact);
+    const handleContactDetails = (contactId)=>{
+        setHomeActive((prev)=>!prev);
+        navigate(`/contact-details/${contactId}`);
     }   
 
-    const handleUpdateContact=(contactId)=>{
-        console.log("update id : ", contactId);
+    const handleUpdateContact = (contactId) => {
+        setHomeActive((prev)=>!prev);
+        navigate(`/update-contact/${contactId}`);
     }
 
     const handleDeleteContact = async(contactId)=>{
@@ -28,10 +31,8 @@ const ContactList = (props) => {
             setContacts(newContact);
         }
     }
-
     return (
         <div className='contactList-container'>
-            {console.log("contact List : ", contacts)}
             {contacts.map((contact)=>(
                 <div className='contacts' key={contact.id}>
                     <div className='contact-image'>
